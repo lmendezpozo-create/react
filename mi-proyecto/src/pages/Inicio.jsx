@@ -58,8 +58,10 @@ export default function Inicio() {
               key={product.id}
               name={product.name}
               spec={product.spec}
+              description={product.description}
               price={product.price}
               image={product.image}
+              badge={product.badge}
             />
           ))}
         </div>
