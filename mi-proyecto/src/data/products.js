@@ -1,23 +1,38 @@
 // products.js — Datos de catálogo para la página de inicio.
 //
-// Las imágenes se importan desde la carpeta `src/assets/` usando Vite.
-// Para cambiar a fotos reales, coloca tus archivos en `src/assets/`
-// conservando el mismo nombre (p. ej. `silla.svg`) o actualiza el import.
+// ⚠️ SISTEMA AUTOMÁTICO DE IMÁGENES:
+// Para añadir o reemplazar fotos de muebles SOLO tienes que colocar tus
+// archivos en la carpeta `src/assets/images/`. Se cargan automáticamente,
+// sin necesidad de editar imports ni nombres.
+//
+//   💡 Soporta .jpg, .png, .webp, .svg, etc.
+//   💡 Las imágenes se asignan a los productos en orden alfabético
+//      del nombre de archivo, para que puedas controlar qué foto va en
+//      cada tarjeta renombrando el archivo (p. ej: 01-silla.jpg, 02-sofa.jpg).
+//
+// ➜ Consulta la guía completa en `src/docs/imagenes.md`.
 
-import sillaImg from '../assets/silla.svg'
-import sofaImg from '../assets/sofa.svg'
-import mesaImg from '../assets/mesa.svg'
-import lamparaImg from '../assets/lampara.svg'
-import sillonImg from '../assets/sillon.svg'
-import bufeteImg from '../assets/bufete.svg'
-import otomanaImg from '../assets/otomana.svg'
-import libreroImg from '../assets/librero.svg'
+// Carga TODAS las imágenes de la carpeta de forma dinámica con Vite.
+// `import.meta.glob` devuelve { ruta: componenteFuturo } y con
+// `eager: true` obtiene la URL directamente.
+const images = import.meta.glob('../assets/images/**/*', {
+  eager: true,
+  import: 'default',
+})
+
+// Se ordenan los nombres por orden alfabético para un mapeo predecible.
+const imageUrls = Object.keys(images)
+  .sort()
+  .map((key) => images[key])
+
+// Utilidad de seguridad: devuelve la imagen por índice (o nada si no hay).
+const imgAt = (index) => imageUrls[index] ?? ''
 
 // ============================================================
 // Catálogo de productos
 //   - name, spec, description, price: descripción del artículo
 //   - badge: marcador dinámico ('nuevo' | 'oferta' | null)
-//   - image: archivo importado desde src/assets/
+//   - image: se asigna automáticamente desde src/assets/images/
 // ============================================================
 export const products = [
   {
@@ -28,7 +43,7 @@ export const products = [
     description:
       'Silla de comedor con estructura de fresno claro y asiento tapizado en lino blanco. Líneas depuradas y respaldo curvado para un confort ergonómico.',
     badge: 'nuevo',
-    image: sillaImg,
+    image: imgAt(0),
   },
   {
     id: 2,
@@ -38,7 +53,7 @@ export const products = [
     description:
       'Sofá de dos plazas de perfil bajo y patas de acero cepillado. Tapizado en terciopelo azul marino que aporta una elegancia atemporal al salón.',
     badge: 'oferta',
-    image: sofaImg,
+    image: imgAt(1),
   },
   {
     id: 3,
@@ -48,7 +63,7 @@ export const products = [
     description:
       'Mesa de comedor de roble macizo con tablero grueso y patas tipo bloque de inspiración brutalista. Acabado mate que resalta la veta natural.',
     badge: null,
-    image: mesaImg,
+    image: imgAt(2),
   },
   {
     id: 4,
@@ -58,7 +73,7 @@ export const products = [
     description:
       'Lámpara de pie escultural con vástago de metal negro mate y base de hormigón. Difusor de vidrio esmerilado que emite una luz cálida y envolvente.',
     badge: 'nuevo',
-    image: lamparaImg,
+    image: imgAt(3),
   },
   {
     id: 5,
@@ -68,7 +83,7 @@ export const products = [
     description:
       'Sillón de perfil envolvente tapizado en bouclé crema. Silueta orgánica y base de madera lacada en negro para un punto focal escultural.',
     badge: 'nuevo',
-    image: sillonImg,
+    image: imgAt(4),
   },
   {
     id: 6,
@@ -78,7 +93,7 @@ export const products = [
     description:
       'Bufete de aliso tintado con acabado mate y herrajes ocultos. Amplio almacenaje con puertas corredizas de línea limpia.',
     badge: null,
-    image: bufeteImg,
+    image: imgAt(5),
   },
   {
     id: 7,
@@ -88,7 +103,7 @@ export const products = [
     description:
       'Otomana redondeada de cuero vegano en tono tabaco. Volumen generoso y costuras finas que añaden calidez al espacio.',
     badge: 'oferta',
-    image: otomanaImg,
+    image: imgAt(6),
   },
   {
     id: 8,
@@ -98,6 +113,6 @@ export const products = [
     description:
       'Librero de roble ahumado con estanterías asimétricas. Composición arquitectónica que funciona como divisor de ambientes.',
     badge: null,
-    image: libreroImg,
+    image: imgAt(7),
   },
 ]
