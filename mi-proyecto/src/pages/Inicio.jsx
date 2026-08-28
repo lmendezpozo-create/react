@@ -61,6 +61,7 @@ export default function Inicio() {
               description={product.description}
               price={product.price}
               image={product.image}
+              repeatImage={product.repeatImage}
               badge={product.badge}
             />
           ))}
