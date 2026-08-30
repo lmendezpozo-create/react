@@ -19,12 +19,8 @@ const heroImage = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
 )}`
 
 export default function Inicio() {
-  // Estado local del carrito (solo para demostrar el click en las tarjetas).
-  // Nota: aquí solo mostramos la cantidad añadida de forma simple.
-
   return (
     <>
-      {/* ===== HERO ===== */}
       <section className="hero">
         <div className="hero__media">
           <img src={heroImage} alt="Sala de estar minimalista moderna" />
@@ -43,7 +39,6 @@ export default function Inicio() {
         </div>
       </section>
 
-      {/* ===== COLECCIÓN DESTACADA ===== */}
       <section id="collection" className="section container">
         <div className="section__heading">
           <h2 className="headline-lg">Piezas Destacadas</h2>
@@ -61,7 +56,8 @@ export default function Inicio() {
               description={product.description}
               price={product.price}
               image={product.image}
-              previewImage={product.previewImage}
+              previewImage={product.previewImage ?? product.repeatImage}
+              repeatImage={product.repeatImage ?? product.previewImage}
               badge={product.badge}
             />
           ))}

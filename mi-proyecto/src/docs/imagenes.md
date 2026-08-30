@@ -8,7 +8,8 @@ src/assets/images/
 
 El catálogo carga automáticamente los archivos de esa carpeta (`.jpg`, `.png`,
 `.webp`, `.svg`, etc.). Cada producto indica explícitamente qué nombres de
-archivo usa, sin depender del orden alfabético.
+archivo usa para la imagen principal y la de vista rápida, sin depender del
+orden alfabético.
 
 ---
 
@@ -18,14 +19,13 @@ archivo usa, sin depender del orden alfabético.
 2. Coloca o reemplaza tus fotos.
 3. Guarda y recarga: la página mostrará las imágenes automáticamente.
 
-Los nombres usados por cada producto se configuran en `products.js`.
-
 ---
 
 ## 🎯 Controlar las imágenes de cada producto
 
-Cada producto tiene dos campos: `image` para la tarjeta de la página principal
-y `previewImage` para la imagen mostrada al abrir "Vista Rápida".
+Cada producto tiene dos campos principales: `image` para la tarjeta de la
+página principal y `previewImage` para la imagen que se muestra al abrir
+"Vista Rápida".
 
 | Producto | Tarjeta | Vista Rápida |
 |----------|---------|--------------|
@@ -45,23 +45,22 @@ añadan nuevas imágenes.
 
 ## ✏️ Formato de producto en `products.js`
 
-Si además quieres cambiar nombre, precio o descripción, edita el objeto del
-producto en `src/data/products.js`. Cada producto tiene esta forma:
-
 ```js
 {
   id: 1,
   name: 'Silla Nórdica',
   spec: 'Ash Wood & Linen',
   price: '$249.00',
-  badge: 'nuevo',          // 'nuevo' | 'oferta' | null
-  image: img('07-sillaNordica.jpg.webp'),
-  previewImage: img('08-sillaNordica.jpg.webp'),
+  badge: 'nuevo',
+  image: resolveImageByName('07-sillaNordica.jpg.webp'),
+  previewImage: resolveImageByName('08-sillaNordica.jpg.webp'),
+  repeatImage: resolveImageByName('08-sillaNordica.jpg.webp'),
   description: '...',
-},
+}
 ```
 
-> Usa el nombre exacto del archivo para seleccionar cada imagen.
+> El campo `previewImage` se usa en la vista rápida. `repeatImage` queda como
+> alias para compatibilidad con otros puntos del código.
 
 ---
 

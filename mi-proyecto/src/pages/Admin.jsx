@@ -6,6 +6,7 @@
 
 import { useAuth } from '../context/AuthContext.jsx'
 import { orders } from '../data/orders.js'
+import { products } from '../data/products.js'
 
 export default function Admin() {
   // Lee la sesión para mostrar el nombre del administrador y el logout.
@@ -18,8 +19,7 @@ export default function Admin() {
         <div>
           <h1 className="headline-lg admin__title">Panel de Administración</h1>
           <p className="body-md admin__subtitle">
-            Bienvenido, {session?.name}. Aquí puedes revisar las últimas compras
-            registradas.
+            Bienvenido, {session?.name}. Aquí puedes revisar las últimas compras y la gestión de imágenes.
           </p>
         </div>
         <button className="btn btn-outline" onClick={logout} type="button">
@@ -55,6 +55,35 @@ export default function Admin() {
           </tbody>
         </table>
       </div>
+
+      {/* Sección de Vista Previa de Imágenes Repetidas */}
+      <h2 className="admin__section-title">🖼️ Vista Previa de Imágenes y Duplicados</h2>
+      <div className="admin__gallery">
+        {products.map((product) => (
+          <div key={product.id} className="admin__gallery-card">
+            <h3 className="admin__gallery-title">{product.id}. {product.name}</h3>
+            <div className="admin__preview-grid">
+              <div className="admin__img-preview-wrap">
+                <span>Principal</span>
+                {product.image ? (
+                  <img src={product.image} alt={`${product.name} principal`} className="admin__img-thumb" />
+                ) : (
+                  <div className="admin__img-thumb">Sin imagen</div>
+                )}
+              </div>
+              <div className="admin__img-preview-wrap">
+                <span>Repetida / Duplicada</span>
+                {product.repeatImage ? (
+                  <img src={product.repeatImage} alt={`${product.name} repetida`} className="admin__img-thumb" />
+                ) : (
+                  <div className="admin__img-thumb">Sin duplicado</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }
+

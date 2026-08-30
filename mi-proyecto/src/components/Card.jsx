@@ -1,4 +1,4 @@
-﻿// Card.jsx — Componente reutilizable: tarjeta de producto interactiva.
+// Card.jsx — Componente reutilizable: tarjeta de producto interactiva.
 //
 // Funcionalidades:
 //   1. Zoom suave de la imagen al pasar el cursor (escala 1.1x + transición).
@@ -10,9 +10,9 @@
 //   name, spec, description, price, image, previewImage, badge ('nuevo' | 'oferta' | null)
 
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 
-// La tarjeta es un componente stateful: usa useState para controlar
-// el modal (abierto/cerrado).
 export default function Card({
   name = 'Producto',
   spec = 'Material',
@@ -20,34 +20,58 @@ export default function Card({
   price = '$0.00',
   image,
   previewImage = image,
+  repeatImage = previewImage,
   badge = null,
   onAddToCart,
 }) {
-  // Estado que indica si el modal de "Vista Rápida" está abierto.
   const [showModal, setShowModal] = useState(false)
+  const [activeModalImg, setActiveModalImg] = useState(null)
 
-  // Texto mostrado según el tipo de badge dinámico.
+  const { session } = useAuth()
+  const navigate = useNavigate()
+
   const badgeLabel = badge === 'oferta' ? 'En Oferta' : 'Nuevo'
+
+  const handleOpenModal = () => {
+    setActiveModalImg(previewImage || repeatImage || image)
+    setShowModal(true)
+  }
+
+  const modalImageToDisplay = activeModalImg || previewImage || repeatImage || image
+
+  // Manejo de la adición al carrito con verificación de sesión
+  const handleCartClick = () => {
+    if (!session) {
+      alert('⚠️ Necesitas crear una cuenta o iniciar sesión para agregar productos al carrito.')
+      navigate('/login')
+      return
+    }
+
+    alert(`🛒 ¡"${name}" se ha añadido con éxito al carrito de ${session.name}!`)
+    if (onAddToCart) {
+      onAddToCart(name)
+    }
+    if (showModal) {
+      setShowModal(false)
+    }
+  }
 
   return (
     <article className="card">
-      {/* Imagen con zoom al hover + botón "Vista Rápida" + badge */}
       <div className="card__media">
         <img src={image} alt={name} loading="lazy" className="card__img" />
 
-        {/* Badge dinámico en la esquina superior derecha (solo si existe) */}
         {badge && (
           <span className={`card__badge card__badge--${badge}`}>
             {badgeLabel}
           </span>
         )}
 
-        {/* Botón "Vista Rápida": se muestra al pasar el cursor y abre el modal */}
         <div className="card__quickview">
           <button
             className="quickview-btn label-sm"
             type="button"
-            onClick={() => setShowModal(true)}
+            onClick={handleOpenModal}
           >
             <span aria-hidden="true" className="quickview-icon">
               ◉
@@ -57,28 +81,23 @@ export default function Card({
         </div>
       </div>
 
-      {/* Información del producto */}
       <div className="card__body">
         <h3 className="card__name">{name}</h3>
         <p className="card__spec">{spec}</p>
         <p className="card__desc">{description}</p>
 
-        {/* Precio + botón para añadir al carrito */}
         <div className="card__footer">
           <span className="card__price">{price}</span>
           <button
             className="card__add"
             aria-label={`Añadir ${name} al carrito`}
-            onClick={onAddToCart}
+            onClick={handleCartClick}
           >
             +
           </button>
         </div>
       </div>
 
-      {/* ===== MODAL "VISTA RÁPIDA" =====
-          Se renderiza cuando showModal es true. El clic en el fondo
-          (overlay) o en la "X" cierra el modal. */}
       {showModal && (
         <div className="modal" onClick={() => setShowModal(false)}>
           <div
@@ -97,7 +116,7 @@ export default function Card({
             </button>
 
             <div className="modal__media">
-              <img src={previewImage} alt={name} className="modal__img" />
+              <img src={modalImageToDisplay} alt={`${name} vista previa`} className="modal__img" />
             </div>
 
             <div className="modal__info">
@@ -113,10 +132,7 @@ export default function Card({
               <button
                 className="btn btn-primary modal__cta"
                 type="button"
-                onClick={() => {
-                  if (onAddToCart) onAddToCart()
-                  setShowModal(false)
-                }}
+                onClick={handleCartClick}
               >
                 Añadir al carrito
               </button>
@@ -127,3 +143,5 @@ export default function Card({
     </article>
   )
 }
+
+

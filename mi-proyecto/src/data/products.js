@@ -6,32 +6,27 @@
 // sin necesidad de editar imports ni nombres.
 //
 //   💡 Soporta .jpg, .png, .webp, .svg, etc.
-//   💡 Las imágenes se asignan a los productos en orden alfabético
-//      del nombre de archivo, para que puedas controlar qué foto va en
-//      cada tarjeta renombrando el archivo (p. ej: 01-silla.jpg, 02-sofa.jpg).
+//   💡 Cada producto mantiene una imagen principal y otra para la vista rápida.
 //
 // ➜ Consulta la guía completa en `src/docs/imagenes.md`.
 
-// Carga TODAS las imágenes de la carpeta de forma dinámica con Vite.
-// `import.meta.glob` devuelve { ruta: componenteFuturo } y con
-// `eager: true` obtiene la URL directamente.
-const images = import.meta.glob('../assets/images/**/*', {
+const primaryImages = import.meta.glob('../assets/images/*.{jpg,png,webp,jpeg,svg}', {
   eager: true,
   import: 'default',
 })
 
-// Busca una imagen por su nombre exacto para no depender del orden del sistema.
-const img = (fileName) => {
-  const key = Object.keys(images).find((path) => path.endsWith(`/${fileName}`))
-  return key ? images[key] : ''
+const resolveImageByName = (fileName) => {
+  const key = Object.keys(primaryImages).find((path) => path.endsWith(`/${fileName}`))
+  return key ? primaryImages[key] : ''
 }
 
 // ============================================================
 // Catálogo de productos
 //   - name, spec, description, price: descripción del artículo
 //   - badge: marcador dinámico ('nuevo' | 'oferta' | null)
-//   - image: foto mostrada en la tarjeta
-//   - previewImage: foto mostrada en la vista rápida
+//   - image: imagen principal de la tarjeta
+//   - previewImage: imagen para la vista rápida
+//   - repeatImage: alias para compatibilidad con versiones anteriores
 // ============================================================
 export const products = [
   {
@@ -42,8 +37,9 @@ export const products = [
     description:
       'Silla de comedor con estructura de fresno claro y asiento tapizado en lino blanco. Líneas depuradas y respaldo curvado para un confort ergonómico.',
     badge: 'nuevo',
-    image: img('07-sillaNordica.jpg.webp'),
-    previewImage: img('08-sillaNordica.jpg.webp'),
+    image: resolveImageByName('07-sillaNordica.jpg.webp'),
+    previewImage: resolveImageByName('08-sillaNordica.jpg.webp'),
+    repeatImage: resolveImageByName('08-sillaNordica.jpg.webp'),
   },
   {
     id: 2,
@@ -53,8 +49,9 @@ export const products = [
     description:
       'Sofá de dos plazas de perfil bajo y patas de acero cepillado. Tapizado en terciopelo azul marino que aporta una elegancia atemporal al salón.',
     badge: 'oferta',
-    image: img('01-sofa.jpg.jpg'),
-    previewImage: img('02-sofa.jpg.jpg'),
+    image: resolveImageByName('01-sofa.jpg.jpg'),
+    previewImage: resolveImageByName('02-sofa.jpg.jpg'),
+    repeatImage: resolveImageByName('02-sofa.jpg.jpg'),
   },
   {
     id: 3,
@@ -64,8 +61,9 @@ export const products = [
     description:
       'Mesa de comedor de roble macizo con tablero grueso y patas tipo bloque de inspiración brutalista. Acabado mate que resalta la veta natural.',
     badge: null,
-    image: img('04-mesaRoble.jpg.webp'),
-    previewImage: img('05-mesaRoble.jpg.webp'),
+    image: resolveImageByName('04-mesaRoble.jpg.webp'),
+    previewImage: resolveImageByName('05-mesaRoble.jpg.webp'),
+    repeatImage: resolveImageByName('05-mesaRoble.jpg.webp'),
   },
   {
     id: 4,
@@ -75,8 +73,9 @@ export const products = [
     description:
       'Lámpara de pie escultural con vástago de metal negro mate y base de hormigón. Difusor de vidrio esmerilado que emite una luz cálida y envolvente.',
     badge: 'nuevo',
-    image: img('03-lampara.jpg.jpg'),
-    previewImage: img('06-lampara.jpg.webp'),
+    image: resolveImageByName('03-lampara.jpg.jpg'),
+    previewImage: resolveImageByName('06-lampara.jpg.webp'),
+    repeatImage: resolveImageByName('06-lampara.jpg.webp'),
   },
   {
     id: 5,
@@ -86,8 +85,9 @@ export const products = [
     description:
       'Sillón de perfil envolvente tapizado en bouclé crema. Silueta orgánica y base de madera lacada en negro para un punto focal escultural.',
     badge: 'nuevo',
-    image: img('09-sillaCupula.jpg'),
-    previewImage: img('10-sillaCapsula.jpg'),
+    image: resolveImageByName('09-sillaCupula.jpg'),
+    previewImage: resolveImageByName('10-sillaCapsula.jpg'),
+    repeatImage: resolveImageByName('10-sillaCapsula.jpg'),
   },
   {
     id: 6,
@@ -97,8 +97,9 @@ export const products = [
     description:
       'Bufete de aliso tintado con acabado mate y herrajes ocultos. Amplio almacenaje con puertas corredizas de línea limpia.',
     badge: null,
-    image: img('11-buffetAliso.jpg'),
-    previewImage: img('12-buffetAliso.jpg'),
+    image: resolveImageByName('11-buffetAliso.jpg'),
+    previewImage: resolveImageByName('12-buffetAliso.jpg'),
+    repeatImage: resolveImageByName('12-buffetAliso.jpg'),
   },
   {
     id: 7,
@@ -108,8 +109,9 @@ export const products = [
     description:
       'Otomana redondeada de cuero vegano en tono tabaco. Volumen generoso y costuras finas que añaden calidez al espacio.',
     badge: 'oferta',
-    image: img('13-otomanaCuero.jpg'),
-    previewImage: img('14-otomanoCuero.jpg'),
+    image: resolveImageByName('13-otomanaCuero.jpg'),
+    previewImage: resolveImageByName('14-otomanoCuero.jpg'),
+    repeatImage: resolveImageByName('14-otomanoCuero.jpg'),
   },
   {
     id: 8,
@@ -119,7 +121,9 @@ export const products = [
     description:
       'Librero de roble ahumado con estanterías asimétricas. Composición arquitectónica que funciona como divisor de ambientes.',
     badge: null,
-    image: img('15-libreroEscultural.jpg'),
-    previewImage: img('16-libreroEscultural.jpg'),
+    image: resolveImageByName('15-libreroEscultural.jpg'),
+    previewImage: resolveImageByName('16-libreroEscultural.jpg'),
+    repeatImage: resolveImageByName('16-libreroEscultural.jpg'),
   },
 ]
+
