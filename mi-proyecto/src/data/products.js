@@ -20,19 +20,18 @@ const images = import.meta.glob('../assets/images/**/*', {
   import: 'default',
 })
 
-// Se ordenan los nombres por orden alfabético para un mapeo predecible.
-const imageUrls = Object.keys(images)
-  .sort()
-  .map((key) => images[key])
-
-// Utilidad de seguridad: devuelve la imagen por índice (o nada si no hay).
-const imgAt = (index) => imageUrls[index] ?? ''
+// Busca una imagen por su nombre exacto para no depender del orden del sistema.
+const img = (fileName) => {
+  const key = Object.keys(images).find((path) => path.endsWith(`/${fileName}`))
+  return key ? images[key] : ''
+}
 
 // ============================================================
 // Catálogo de productos
 //   - name, spec, description, price: descripción del artículo
 //   - badge: marcador dinámico ('nuevo' | 'oferta' | null)
-//   - image: se asigna automáticamente desde src/assets/images/
+//   - image: foto mostrada en la tarjeta
+//   - previewImage: foto mostrada en la vista rápida
 // ============================================================
 export const products = [
   {
@@ -43,7 +42,8 @@ export const products = [
     description:
       'Silla de comedor con estructura de fresno claro y asiento tapizado en lino blanco. Líneas depuradas y respaldo curvado para un confort ergonómico.',
     badge: 'nuevo',
-    image: imgAt(0),
+    image: img('07-sillaNordica.jpg.webp'),
+    previewImage: img('08-sillaNordica.jpg.webp'),
   },
   {
     id: 2,
@@ -53,7 +53,8 @@ export const products = [
     description:
       'Sofá de dos plazas de perfil bajo y patas de acero cepillado. Tapizado en terciopelo azul marino que aporta una elegancia atemporal al salón.',
     badge: 'oferta',
-    image: imgAt(1),
+    image: img('01-sofa.jpg.jpg'),
+    previewImage: img('02-sofa.jpg.jpg'),
   },
   {
     id: 3,
@@ -63,7 +64,8 @@ export const products = [
     description:
       'Mesa de comedor de roble macizo con tablero grueso y patas tipo bloque de inspiración brutalista. Acabado mate que resalta la veta natural.',
     badge: null,
-    image: imgAt(2),
+    image: img('04-mesaRoble.jpg.webp'),
+    previewImage: img('05-mesaRoble.jpg.webp'),
   },
   {
     id: 4,
@@ -73,7 +75,8 @@ export const products = [
     description:
       'Lámpara de pie escultural con vástago de metal negro mate y base de hormigón. Difusor de vidrio esmerilado que emite una luz cálida y envolvente.',
     badge: 'nuevo',
-    image: imgAt(3),
+    image: img('03-lampara.jpg.jpg'),
+    previewImage: img('06-lampara.jpg.webp'),
   },
   {
     id: 5,
@@ -83,7 +86,8 @@ export const products = [
     description:
       'Sillón de perfil envolvente tapizado en bouclé crema. Silueta orgánica y base de madera lacada en negro para un punto focal escultural.',
     badge: 'nuevo',
-    image: imgAt(4),
+    image: img('09-sillaCupula.jpg'),
+    previewImage: img('10-sillaCapsula.jpg'),
   },
   {
     id: 6,
@@ -93,7 +97,8 @@ export const products = [
     description:
       'Bufete de aliso tintado con acabado mate y herrajes ocultos. Amplio almacenaje con puertas corredizas de línea limpia.',
     badge: null,
-    image: imgAt(5),
+    image: img('11-buffetAliso.jpg'),
+    previewImage: img('12-buffetAliso.jpg'),
   },
   {
     id: 7,
@@ -103,7 +108,8 @@ export const products = [
     description:
       'Otomana redondeada de cuero vegano en tono tabaco. Volumen generoso y costuras finas que añaden calidez al espacio.',
     badge: 'oferta',
-    image: imgAt(6),
+    image: img('13-otomanaCuero.jpg'),
+    previewImage: img('14-otomanoCuero.jpg'),
   },
   {
     id: 8,
@@ -113,6 +119,7 @@ export const products = [
     description:
       'Librero de roble ahumado con estanterías asimétricas. Composición arquitectónica que funciona como divisor de ambientes.',
     badge: null,
-    image: imgAt(7),
+    image: img('15-libreroEscultural.jpg'),
+    previewImage: img('16-libreroEscultural.jpg'),
   },
 ]

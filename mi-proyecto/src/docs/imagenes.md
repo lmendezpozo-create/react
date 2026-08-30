@@ -6,8 +6,9 @@ Todas las imágenes de los muebles viven en:
 src/assets/images/
 ```
 
-**No necesitas editar código:** el catálogo carga automáticamente cualquier
-archivo que coloques en esa carpeta (`.jpg`, `.png`, `.webp`, `.svg`, etc.).
+El catálogo carga automáticamente los archivos de esa carpeta (`.jpg`, `.png`,
+`.webp`, `.svg`, etc.). Cada producto indica explícitamente qué nombres de
+archivo usa, sin depender del orden alfabético.
 
 ---
 
@@ -17,28 +18,28 @@ archivo que coloques en esa carpeta (`.jpg`, `.png`, `.webp`, `.svg`, etc.).
 2. Coloca o reemplaza tus fotos.
 3. Guarda y recarga: la página mostrará las imágenes automáticamente.
 
-No hay que tocar `products.js` para que aparezcan.
+Los nombres usados por cada producto se configuran en `products.js`.
 
 ---
 
-## 🎯 Controlar qué imagen va en cada tarjeta
+## 🎯 Controlar las imágenes de cada producto
 
-Las imágenes se asignan a los productos en **orden alfabético del nombre**
-de archivo. Para que cada foto quede en la tarjeta que quieres, usa un
-**prefijo numérico** según la posición del producto:
+Cada producto tiene dos campos: `image` para la tarjeta de la página principal
+y `previewImage` para la imagen mostrada al abrir "Vista Rápida".
 
-| Posición | Producto        | Renombra la imagen así  |
-|----------|-----------------|--------------------------|
-| 1        | Silla Nórdica   | `01-silla.jpg`           |
-| 2        | Sofá Terciopelo | `02-sofa.jpg`            |
-| 3        | Mesa Roble      | `03-mesa.jpg`            |
-| 4        | Lámpara Cúpula  | `04-lampara.jpg`         |
-| 5        | Sillón Cápsula  | `05-sillon.jpg`          |
-| 6        | Bufete Aliso    | `06-bufete.jpg`          |
-| 7        | Otomana Cuero   | `07-otomana.jpg`         |
-| 8        | Librero         | `08-librero.jpg`         |
+| Producto | Tarjeta | Vista Rápida |
+|----------|---------|--------------|
+| Silla Nórdica | `07-sillaNordica.jpg.webp` | `08-sillaNordica.jpg.webp` |
+| Sofá Terciopelo | `01-sofa.jpg.jpg` | `02-sofa.jpg.jpg` |
+| Mesa Roble | `04-mesaRoble.jpg.webp` | `05-mesaRoble.jpg.webp` |
+| Lámpara Cúpula | `03-lampara.jpg.jpg` | `06-lampara.jpg.webp` |
+| Sillón Cápsula | `09-sillaCupula.jpg` | `10-sillaCapsula.jpg` |
+| Bufete Aliso | `11-buffetAliso.jpg` | `12-buffetAliso.jpg` |
+| Otomana Cuero | `13-otomanaCuero.jpg` | `14-otomanoCuero.jpg` |
+| Librero Escultural | `15-libreroEscultural.jpg` | `16-libreroEscultural.jpg` |
 
-Al poner `01-`, `02-`, ... el orden alfabético respeta tu intención.
+Usa el nombre exacto del archivo para mantener la correspondencia aunque se
+añadan nuevas imágenes.
 
 ---
 
@@ -54,13 +55,13 @@ producto en `src/data/products.js`. Cada producto tiene esta forma:
   spec: 'Ash Wood & Linen',
   price: '$249.00',
   badge: 'nuevo',          // 'nuevo' | 'oferta' | null
-  image: imgAt(0),         // ← posición de la imagen (0 = primera)
+  image: img('07-sillaNordica.jpg.webp'),
+  previewImage: img('08-sillaNordica.jpg.webp'),
   description: '...',
 },
 ```
 
-> El campo `image: imgAt(0)` indica la **posición** de la imagen dentro de la
-> carpeta (ordenada alfabéticamente). `0` = primera, `1` = segunda, etc.
+> Usa el nombre exacto del archivo para seleccionar cada imagen.
 
 ---
 

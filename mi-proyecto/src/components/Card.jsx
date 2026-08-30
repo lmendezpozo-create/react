@@ -7,7 +7,7 @@
 //   3. Badge dinámico ("Nuevo" / "En Oferta") en la esquina superior derecha.
 //
 // Props:
-//   name, spec, description, price, image, badge ('nuevo' | 'oferta' | null)
+//   name, spec, description, price, image, previewImage, badge ('nuevo' | 'oferta' | null)
 
 import { useState } from 'react'
 
@@ -19,6 +19,7 @@ export default function Card({
   description = '',
   price = '$0.00',
   image,
+  previewImage = image,
   badge = null,
   onAddToCart,
 }) {
@@ -96,7 +97,7 @@ export default function Card({
             </button>
 
             <div className="modal__media">
-              <img src={image} alt={name} className="modal__img" />
+              <img src={previewImage} alt={name} className="modal__img" />
             </div>
 
             <div className="modal__info">
